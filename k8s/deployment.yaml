@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apuestas-service
+  labels:
+    app: apuestas-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: apuestas-service
+  template:
+    metadata:
+      labels:
+        app: apuestas-service
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1                             
+          topologyKey: kubernetes.io/hostname     
+          whenUnsatisfiable: ScheduleAnyway      
+          labelSelector:
+            matchLabels:
+              app: apuestas-service                 
+
+      containers:
+        - name: apuestas-service
+          # Reemplazar <ACCOUNT_ID> y <REGION> tras el push a Amazon ECR.
+          image:  631932931672.dkr.ecr.us-east-1.amazonaws.com/apuestas-service:latest
+          ports:
+            - containerPort: 8005
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 8005
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8005
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "250m"
+              memory: "128Mi"
