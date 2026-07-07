@@ -32,8 +32,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: casino-config
-                  key: DB_HOST
-               "postgres-service"  
+                  key: DB_HOST  
             - name: DB_PORT
               value: "5432"
             - name: DB_USER
