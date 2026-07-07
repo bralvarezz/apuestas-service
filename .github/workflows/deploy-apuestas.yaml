@@ -80,19 +80,6 @@ jobs:
 
       - name: 7. Esperar al rollout y mostrar el resultado
         run: |
-          echo "Viendo el estado inicial de los pods..."
-          kubectl get pods -o wide
-          
-          echo "Monitoreando el rollout de apuestas-service..."
-          # El '||' hace que si el rollout falla, corra los comandos de abajo en vez de romper el pipeline al tiro
-          kubectl rollout status deployment/apuestas-service --timeout=90s || {
-            echo "❌ El rollout falló. Extrayendo logs para ver la falla real de la App:"
-            kubectl get pods
-            kubectl describe deployment apuestas-service
-            echo "--- LOGS DEL CONTENEDOR ---"
-            kubectl logs -l app=apuestas-service --tail=50
-            exit 1
-          }
-          
-          echo "✅ ¡Rollout completado con éxito absoluto!"
+          kubectl apply -f k8s/configmap.yaml
+          kubectl rollout status deployment/apuestas-service --timeout=180s
           kubectl get pods -o wide
