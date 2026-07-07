@@ -10,9 +10,6 @@ env:
   CLUSTER_NAME: casino-eks 
   
 jobs:
-  # ===========================================================
-  # ETAPA 1 - PRUEBAS (Obligatoria). Si falla, NO se despliega.
-  # ===========================================================
   test:
     name: Pruebas unitarias (pytest)
     runs-on: ubuntu-latest
@@ -28,13 +25,9 @@ jobs:
       - name: 3. Instalar dependencias y correr pytest
         run: |
           python -m pip install --upgrade pip
-          # Instala los requerimientos base y de desarrollo que están en la raíz
           pip install -r requirements.txt -r requirements-dev.txt
           pytest
 
-  # ===========================================================
-  # ETAPA 2 - BUILD + PUSH + DEPLOY. Solo si 'test' fue exitoso.
-  # ===========================================================
   deploy:
     name: Build, push y deploy a EKS
     runs-on: ubuntu-latest
