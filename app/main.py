@@ -25,6 +25,9 @@ from .auth import requiere_admin, usuario_actual
 from .db import conexion, dict_cursor, esperar_bd, init_schema, sembrar_eventos
 from .simulacion import simular_partido
 
+INICIO = time.time()   
+READY_MAX_MEM_PERCENT = float(os.getenv("READY_MAX_MEM_PERCENT", "90"))
+
 SELECCIONES = {"local", "empate", "visita"}
 CUOTA_COL = {"local": "cuota_local", "empate": "cuota_empate", "visita": "cuota_visita"}
 
