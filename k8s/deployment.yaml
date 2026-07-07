@@ -59,16 +59,16 @@ spec:
 
           livenessProbe:
             httpGet:
-              path: /live
+              path: /livez
               port: 8005
-            initialDelaySeconds: 5
+            initialDelaySeconds: 15
             periodSeconds: 10
 
           readinessProbe:
             httpGet:
-              path: /ready
+              path: /readyz
               port: 8005
-            initialDelaySeconds: 10     
+            initialDelaySeconds: 20 
             periodSeconds: 5
             timeoutSeconds: 2
 
