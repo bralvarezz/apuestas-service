@@ -29,7 +29,11 @@ spec:
             - containerPort: 8005
           env:
             - name: DB_HOST
-              value: "postgres-service"  
+              valueFrom:
+                configMapKeyRef:
+                  name: casino-config
+                  key: DB_HOST
+               "postgres-service"  
             - name: DB_PORT
               value: "5432"
             - name: DB_USER
@@ -59,14 +63,14 @@ spec:
 
           livenessProbe:
             httpGet:
-              path: /livez
+              path: /live
               port: 8005
             initialDelaySeconds: 15
             periodSeconds: 10
 
           readinessProbe:
             httpGet:
-              path: /readyz
+              path: /ready
               port: 8005
             initialDelaySeconds: 20 
             periodSeconds: 5
